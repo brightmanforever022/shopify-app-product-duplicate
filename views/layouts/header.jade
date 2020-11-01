@@ -1,0 +1,18 @@
+block header
+  #header
+    ul.header_container
+      li
+        if page=='index'
+          a.active(href="/") Home
+        else
+          a(href="/") Home
+      li
+        if page == 'stores'
+          a.active(href="/stores") Stores
+        else
+          a(href="/stores") Stores
+      li
+        if page == 'products'
+          a.active(href="/products") Products
+        else
+          a(href="/products") Products

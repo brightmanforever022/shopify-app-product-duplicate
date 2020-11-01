@@ -1,0 +1,36 @@
+extends ../layouts/layout
+
+block content
+  .container
+    h1= "Here are the list of the stores which you want to duplicate products into."
+    //- a.delete-all(href="/stores/deleteAll") Delete All Stores
+    .buttons
+      span
+        button.delete-all(onclick='addStore()') Add a Store
+      //- span
+      //-   button.delete-all(onclick='deleteAllStores()') Delete All Stores
+    .stores_container
+      table.bordered
+        tbody
+          if stores.length > 0
+            each store in stores
+              tr
+                td(style='width:30%')=store.store_name
+                td(style='width:30%')=store.store_url
+                td
+                  if store.activated == 1
+                    <span>Activated</span>
+                  else
+                    <span>Disabled</span>
+                td
+                  if store.activated == 1
+                    <span></span>
+                  else
+                    a(href="/stores/check/#{store.id}") Check
+                td
+                  a(href="/stores/#{store.id}/edit") Edit
+                td
+                  a(onclick="deleteStore(#{store.id})") Delete
+          else
+            tr
+              <span>There are no stores registered.</span>

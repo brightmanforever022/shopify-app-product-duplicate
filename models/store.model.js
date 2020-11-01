@@ -1,12 +1,12 @@
 const sql = require("../database/db.js");
 
-const sql = require("./db.js");
-
 // constructor
 const Store = function(store) {
-  this.email = store.email;
-  this.name = store.name;
-  this.active = store.active;
+  this.store_name = store.store_name;
+  this.store_url = store.store_url;
+  this.store_api_key = store.store_api_key;
+  this.store_password = store.store_password;
+  this.activated = 0;
 };
 
 Store.create = (newStore, result) => {
@@ -56,8 +56,13 @@ Store.getAll = result => {
 
 Store.updateById = (id, store, result) => {
   sql.query(
-    "UPDATE stores SET email = ?, name = ?, active = ? WHERE id = ?",
-    [store.email, store.name, store.active, id],
+    "UPDATE stores SET store_name = ?, store_url = ?, store_api_key = ?, store_password = ?, activated = ? WHERE id = ?",
+    [
+      store.store_name, store.store_url,
+      store.store_api_key, store.store_password,
+      store.activated,
+      id
+    ],
     (err, res) => {
       if (err) {
         console.log("error: ", err);

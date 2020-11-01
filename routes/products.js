@@ -1,9 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+const products = require("../controllers/products.controller.js");
+
+router.get('/', products.index);
+router.get('/getAll', products.findAll);
+router.post('/', products.create);
+router.get('/:productId', products.findOne);
+router.put('/:productId', products.update);
+router.delete('/:productId', products.delete);
+router.delete('/', products.deleteAll);
 
 module.exports = router;

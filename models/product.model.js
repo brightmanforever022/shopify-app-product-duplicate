@@ -1,7 +1,5 @@
 const sql = require("../database/db.js");
 
-const sql = require("./db.js");
-
 // constructor
 const Product = function(product) {
   this.email = product.email;
