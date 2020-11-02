@@ -104,3 +104,42 @@ table a:hover {
 }
 
 /* Stores add page */
+.add-store form {
+  border: 1px solid #EEE;
+  padding: 50px;
+}
+.add-store form .input {
+  margin-bottom: 20px;
+}
+.add-store form .input span {
+  display: block;
+  margin-bottom: 5px;
+}
+.add-store form .input input {
+  display: block;
+  width: 300px;
+  height: 24px;
+}
+.add-store form .actions input {
+  padding: 10px;
+  width: 120px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Products page */
+#product-title {
+  width: 200px;
+  height: 24px;
+  display: block;
+}
+#search-button {
+  width: 120px;
+  height: 24px;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 15px;
+}
+.products_list {
+  margin-top: 30px;
+}

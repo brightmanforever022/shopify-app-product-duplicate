@@ -1,0 +1,30 @@
+extends ../layouts/layout
+
+block content
+  .container
+    h1= "Product list of main store"
+
+    form(name="add-store", method="post" action="/products")
+      div.input
+        input(type="text", id="product-title", name="search_title", value="#{searchQuery}")
+      div.actions
+        input(type="submit", id="search-button", value="Search")
+
+    .stores_container.products_list
+      table.bordered
+        tbody
+          if product
+            tr
+              td(style='width:30%')=product.title
+              td(style='width:30%')=product.handle
+              td
+                a(href="/products/#{product.id}/duplicate") BroadCast
+
+  script.
+    $(document).ready(function(){
+      const productStr = `#{productList}`;
+      const productList = productStr.split(',');
+      $( "#product-title" ).autocomplete({
+        source: productList
+      });
+    });

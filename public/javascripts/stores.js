@@ -10,7 +10,7 @@ function deleteAllStores(e) {
 }
 
 function addStore() {
-  window.location.href = '/stores/#/add';
+  window.location.href = '/stores/add';
 }
 
 function deleteStore(id) {

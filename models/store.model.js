@@ -17,7 +17,6 @@ Store.create = (newStore, result) => {
       return;
     }
 
-    console.log("created store: ", { id: res.insertId, ...newStore });
     result(null, { id: res.insertId, ...newStore });
   });
 };
@@ -31,7 +30,6 @@ Store.findById = (storeId, result) => {
     }
 
     if (res.length) {
-      console.log("found store: ", res[0]);
       result(null, res[0]);
       return;
     }
@@ -49,10 +47,21 @@ Store.getAll = result => {
       return;
     }
 
-    console.log("stores: ", res);
     result(null, res);
   });
 };
+
+Store.getAllActivated = result => {
+  sql.query("SELECT * FROM stores WHERE activated=1", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    result(null, res);
+  });
+}
 
 Store.updateById = (id, store, result) => {
   sql.query(
@@ -76,7 +85,6 @@ Store.updateById = (id, store, result) => {
         return;
       }
 
-      console.log("updated store: ", { id: id, ...store });
       result(null, { id: id, ...store });
     }
   );
@@ -96,7 +104,6 @@ Store.remove = (id, result) => {
       return;
     }
 
-    console.log("deleted store with id: ", id);
     result(null, res);
   });
 };
@@ -109,7 +116,6 @@ Store.removeAll = result => {
       return;
     }
 
-    console.log(`deleted ${res.affectedRows} stores`);
     result(null, res);
   });
 };

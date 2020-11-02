@@ -1,0 +1,22 @@
+extends ../layouts/layout
+
+block content
+  .container.add-store
+    h1= "Add a store"
+
+    form(name="add-store", method="post" action="/stores/#{store.id}")
+      div.input
+        span.label Store Name
+        input(type="text", name="store_name", value=store.store_name)
+      div.input
+        span.label Store URL
+        input(type="text", name="store_url", value=store.store_url)
+      div.input
+        span.label Store API Key
+        input(type="text", name="store_api_key", value=store.store_api_key)
+      div.input
+        span.label Store Password
+        input(type="text", name="store_password", value=store.store_password)
+
+      div.actions
+        input(type="submit", value="Update")

@@ -2,9 +2,9 @@ const sql = require("../database/db.js");
 
 // constructor
 const Product = function(product) {
-  this.email = product.email;
-  this.name = product.name;
-  this.active = product.active;
+  this.origin_id = product.origin_id;
+  this.store_id = product.store_id;
+  this.store_product_id = product.store_product_id;
 };
 
 Product.create = (newProduct, result) => {
