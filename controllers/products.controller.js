@@ -8,20 +8,26 @@ const shopify = new Shopify({
   password: process.env.STORE_PASSWORD
 });
 
-exports.index = (req, res) => {
+exports.index = async (req, res) => {
   const title_query = req.body.search_title || '';
   let productList = []
   // Get id/title of all products
-  shopify.product.list({fields: "id, title"}).then(productsRes => {
-    productList = productsRes.map(pr => pr.title);
-    // search product
-    shopify.product.list({title: title_query}).then(prList => {
-      res.render('products/index', {
-        page: 'products',
-        productList: productList,
-        product: prList[0],
-        searchQuery: title_query
-      });
+  let params = { limit: 5 };
+  do {
+    const products = await shopify.product.list(params);
+    const tempList = products.map(pr => pr.title);
+    productList.push(...tempList);
+    params = products.nextPageParameters;
+  } while (params !== undefined);
+
+  console.log(productList);
+  // search product
+  shopify.product.list({title: title_query}).then(prList => {
+    res.render('products/index', {
+      page: 'products',
+      productList: productList,
+      product: prList[0],
+      searchQuery: title_query
     });
   });
 }
@@ -64,7 +70,10 @@ exports.duplicate = (req, res) => {
         return {
           "src": pi.src,
         }
-      })
+      });
+      const productImage = {
+        "src": mainProductInfo.image ? mainProductInfo.image.src : '',
+      }
       // console.log(mainProductInfo);
       try {
         const createdProduct = await storeConnect.product.create(
@@ -76,7 +85,7 @@ exports.duplicate = (req, res) => {
             "product_type": mainProductInfo.product_type,
             "variants": productVariants,
             "options": productOptions,
-            "image": { "src": mainProductInfo.image.src },
+            "image": productImage,
             "images": productImgaes,
           }
         );
