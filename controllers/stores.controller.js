@@ -15,12 +15,6 @@ exports.index = (req, res) => {
 
 // Check the availability of the store
 exports.checkStore = (req, res) => {
-  const shopify = new Shopify({
-    shopName: 'your-shop-name',
-    apiKey: 'your-api-key',
-    password: 'your-app-password'
-  });
-
   Store.findById(req.params.storeId, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {

@@ -12,7 +12,7 @@ exports.index = async (req, res) => {
   const title_query = req.body.search_title || '';
   let productList = []
   // Get id/title of all products
-  let params = { limit: 5 };
+  let params = { limit: 100 };
   do {
     const products = await shopify.product.list(params);
     const tempList = products.map(pr => pr.title);
@@ -20,7 +20,6 @@ exports.index = async (req, res) => {
     params = products.nextPageParameters;
   } while (params !== undefined);
 
-  console.log(productList);
   // search product
   shopify.product.list({title: title_query}).then(prList => {
     res.render('products/index', {
@@ -32,18 +31,30 @@ exports.index = async (req, res) => {
   });
 }
 
+exports.happenCreated = async (req, res) => {
+  res.status(200).send('received');
+  let createdProductInfo = req.body;
+  await sleep(3000);
+  createdProductInfo = await shopify.product.get(createdProductInfo.id);
+  await broadCast(createdProductInfo);
+}
+
 // Broadcast the product from main store to all other stores
-exports.duplicate = (req, res) => {
+exports.duplicate = async (req, res) => {
+  // Get product information
   const mainProductId = req.params.productId;
-  let storeConnect = null;
+  const mainProductInfo = await shopify.product.get(mainProductId);
   
+  await broadCast(mainProductInfo);
+
+  res.redirect('/products');
+}
+
+async function broadCast (mainProductInfo) {
   Store.getAllActivated(async (err, stores) => {
-    // Get product information
-    const mainProductInfo = await shopify.product.get(mainProductId);
-    
     for (i = 0; i < stores.length; i++) {
       // initialize the connection with each store
-      storeConnect = new Shopify({
+      const storeConnect = new Shopify({
         shopName: stores[i].store_url,
         apiKey: stores[i].store_api_key,
         password: stores[i].store_password
@@ -54,6 +65,7 @@ exports.duplicate = (req, res) => {
         return {
           option1: pv.option1,
           option2: pv.option2,
+          option3: pv.option3,
           price: pv.price,
           sku: pv.sku,
           weight: pv.weight,
@@ -89,13 +101,16 @@ exports.duplicate = (req, res) => {
             "images": productImgaes,
           }
         );
-        console.log('product created: ', stores[i].store_name, createdProduct.id);        
+        console.log('product created: ', stores[i].store_name, createdProduct.title, createdProduct.id);        
       } catch (error) {
         console.log('product creating error: ', error)
       }
     }
   });
-
-  res.redirect('/products');
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const indexes = require("../controllers/indexes.controller.js");
+const indexes = require("../controllers/index.controller.js");
 
 /* GET home page. */
 router.get('/', indexes.index);
