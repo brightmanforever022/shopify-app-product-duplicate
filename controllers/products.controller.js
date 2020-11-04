@@ -12,7 +12,7 @@ exports.index = async (req, res) => {
   const title_query = req.body.search_title || '';
   let productList = []
   // Get id/title of all products
-  let params = { limit: 100 };
+  let params = { limit: 200 };
   do {
     const products = await shopify.product.list(params);
     const tempList = products.map(pr => pr.title);
@@ -95,6 +95,8 @@ async function broadCast (mainProductInfo) {
             "product_type": mainProductInfo.product_type,
             "tags": mainProductInfo.tags.split(','),
             "product_type": mainProductInfo.product_type,
+            "published": false,
+            "status": "draft",
             "variants": productVariants,
             "options": productOptions,
             "image": productImage,
