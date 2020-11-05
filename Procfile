@@ -1,1 +1,1 @@
-nodemon ./bin/www
+node ./bin/www

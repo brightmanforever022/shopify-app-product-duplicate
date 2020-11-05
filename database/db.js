@@ -1,6 +1,7 @@
 const mysql = require("mysql");
+require('dotenv').config()
 
-const dbConfig = require('../config/db.config.js');
+// const dbConfig = require('../config/db.config.js');
 // const connection = mysql.createConnection({
 //   host: dbConfig.host,
 //   user: dbConfig.user,
@@ -11,7 +12,7 @@ const dbConfig = require('../config/db.config.js');
 let connection;
 
 function handleDisconnect() {
-  connection = mysql.createConnection(dbConfig.db_uri);
+  connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
   connection.connect(function(err) {
     if(err) {
       console.log('error when connecting to db:', err);
