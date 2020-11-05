@@ -27,4 +27,11 @@ function handleDisconnect() {
 
 handleDisconnect();
 
+setInterval(function() {
+  connection.query('SELECT id FROM stores LIMIT 1', function(err, results) {
+      if (err) console.log('SELECT the first store: ', err.code);
+      else console.log('SELECT the first store: ', results);
+  });
+}, 10000);
+
 module.exports = connection
