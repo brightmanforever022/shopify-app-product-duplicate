@@ -17,7 +17,7 @@ function deleteStore(id) {
   if (confirm('Are you sure that you delete this store?')) {
     // delete a store by id
     console.log('it will delete a store by id');
-    window.location.href = '/stores/delete/' + id;
+    window.location.href = '/stores/' + id + '/delete/';
   } else {
     // you denied to delete a store by id
     console.log('There are no any actions here');
