@@ -96,7 +96,6 @@ async function broadCast (mainProductInfo) {
         });
         return imageIndex;
       })
-      // console.log('image order: ', imageOrder);
       
       try {
         const createdProduct = await storeConnect.product.create(
@@ -114,8 +113,10 @@ async function broadCast (mainProductInfo) {
             "images": productImgaes,
           }
         );
-        // console.log('product created: ', stores[i].store_name, createdProduct.id);
+        
         await sleep(4000);
+        
+        // update images of variants
         const createdProductInfo = await storeConnect.product.get(createdProduct.id);
         createdProductInfo.variants.map(async (pv, pvIndex) => {
           if (imageOrder[pvIndex] != 100) {
