@@ -86,7 +86,18 @@ async function broadCast (mainProductInfo) {
       const productImage = {
         "src": mainProductInfo.image ? mainProductInfo.image.src : '',
       }
-      // console.log(mainProductInfo);
+
+      const imageOrder = mainProductInfo.variants.map(pv => {
+        let imageIndex = 100;
+        mainProductInfo.images.map((pi, piIndex) => {
+          if (pv.image_id === pi.id) {
+            imageIndex = piIndex;
+          }
+        });
+        return imageIndex;
+      })
+      // console.log('image order: ', imageOrder);
+      
       try {
         const createdProduct = await storeConnect.product.create(
           {            
@@ -103,7 +114,17 @@ async function broadCast (mainProductInfo) {
             "images": productImgaes,
           }
         );
-        console.log('product created: ', stores[i].store_name, createdProduct.title, createdProduct.id);        
+        // console.log('product created: ', stores[i].store_name, createdProduct.id);
+        await sleep(4000);
+        const createdProductInfo = await storeConnect.product.get(createdProduct.id);
+        createdProductInfo.variants.map(async (pv, pvIndex) => {
+          if (imageOrder[pvIndex] != 100) {
+            await storeConnect.productVariant.update(pv.id, {
+              "image_id": createdProductInfo.images[imageOrder[pvIndex]].id
+            });
+          }
+        });
+
       } catch (error) {
         console.log('product creating error: ', error)
       }
