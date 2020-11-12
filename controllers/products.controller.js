@@ -104,7 +104,6 @@ async function broadCast (mainProductInfo) {
             "body_html": mainProductInfo.body_html,
             "product_type": mainProductInfo.product_type,
             "tags": mainProductInfo.tags.split(','),
-            "product_type": mainProductInfo.product_type,
             "published": false,
             "status": "draft",
             "variants": productVariants,
@@ -123,6 +122,7 @@ async function broadCast (mainProductInfo) {
             await storeConnect.productVariant.update(pv.id, {
               "image_id": createdProductInfo.images[imageOrder[pvIndex]].id
             });
+            await sleep(500);
           }
         });
 
